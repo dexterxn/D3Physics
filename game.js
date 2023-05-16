@@ -15,107 +15,62 @@ class Level1 extends Phaser.Scene {
     bullet;
     cursors;
     speed;
+    keyA;
+    keyS;
+    keyD;
+    keyW;
 
     constructor(){
         super('level1');
+       
     }
     preload ()
     {
         this.load.image('wizard', 'assets/pink pixel wizard.png');
         this.load.image('bullet', 'assets/pixel projectile.png');
+        
     }
     create(){
+        // let keyA;
+        // let keyS;
+        // let keyD;
+        // let keyW;
         this.player = this.physics.add.image(256, 448, 'wizard');
         this.cursors = this.input.keyboard.createCursorKeys();
-        this.input.keyboard.on('keydown', this.anyKey, this);
+        // this.input.keyboard.on('keydown', this.anyKey, this);
         // this.player = this.add.sprite(400, 500, 'wizard').setDepth(1);
 
         this.speed = Phaser.Math.GetSpeed(300, 1);
+
+        this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        
 
 
 
     }
     update(time, delta){
-        if (this.cursors.left.isDown)
-        {
-            this.player.x -= this.speed * delta;
-        }
-        else if (this.cursors.right.isDown)
-        {
-            this.player.x += this.speed * delta;
-        }
-        else if (this.cursors.up.isDown)
-        {
+
+        if(this.keyW.isDown || this.cursors.up.isDown) {
+            console.log('W key pressed');
             this.player.y -= this.speed * delta;
         }
-        else if (this.cursors.down.isDown)
-        {
+        if(this.keyA.isDown || this.cursors.left.isDown) {
+            console.log('A key pressed');
+            this.player.x -= this.speed * delta;
+        }
+        if(this.keyS.isDown || this.cursors.down.isDown) {
+            console.log('S key pressed');
             this.player.y += this.speed * delta;
         }
-    }
-
-    moveUp(){
-        console.log("pressing W");
-        this.player.y -= 3;
-    }
-    moveLeft(){
-        console.log("pressing A");
-        this.player.x -= 3;
-    }
-    moveDown(){
-        console.log("pressing S");
-        this.player.y += 3;
-    }
-    moveRight(){
-        console.log("pressing D");
-        this.player.x += 3;
-    }
-
-    anyKey (event)
-    {
-        //  Only allow A-Z . and -
-
-        let code = event.keyCode;
-
-        if (code >= Phaser.Input.Keyboard.KeyCodes.A && code <= Phaser.Input.Keyboard.KeyCodes.Z)
-        {
-            code -= 65;
-
-            let y = Math.floor(code / 10);
-            let x = code - (y * 10);
-
-            console.log('pressing' + code );
-            if(code == 22){
-                this.moveUp();
-            }
-            if(code == 0){
-                this.moveLeft();
-            }
-            if(code == 18){
-                this.moveDown();
-            }
-            if(code == 3){
-                this.moveRight();
-            }
-            // WASD = 22, 0, 18, 3
-
+        if(this.keyD.isDown || this.cursors.right.isDown) {
+            console.log('D key pressed');
+            this.player.x += this.speed * delta;
         }
     }
 
-    // update(time,delta){
-    //     if (this.cursors.right.isDown)
-    //     {
-    //         this.player.x += this.speed * delta;
-    //     }
-    //     else if (this.cursors.up.isDown)
-    //     {
-    //         this.player.y -= this.speed * delta;
-    //     }
-    //     else if (this.cursors.down.isDown)
-    //     {
-    //         this.player.y += this.speed * delta;
-    //     }
-    // }
 }
 
 class Outro extends Phaser.Scene {
