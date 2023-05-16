@@ -1,6 +1,7 @@
 class Intro extends Phaser.Scene {
     constructor() {
         super('intro');
+        
     }
     create() {
         this.add.text(50, 50, "Intro Scene").setFontSize(50);
@@ -26,6 +27,7 @@ class Level1 extends Phaser.Scene {
     create(){
         this.player = this.physics.add.image(256, 448, 'wizard');
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.input.keyboard.on('keydown', this.anyKey, this);
         // this.player = this.add.sprite(400, 500, 'wizard').setDepth(1);
 
         this.speed = Phaser.Math.GetSpeed(300, 1);
@@ -33,7 +35,7 @@ class Level1 extends Phaser.Scene {
 
 
     }
-    update(time,delta){
+    update(time, delta){
         if (this.cursors.left.isDown)
         {
             this.player.x -= this.speed * delta;
@@ -51,6 +53,69 @@ class Level1 extends Phaser.Scene {
             this.player.y += this.speed * delta;
         }
     }
+
+    moveUp(){
+        console.log("pressing W");
+        this.player.y -= 3;
+    }
+    moveLeft(){
+        console.log("pressing A");
+        this.player.x -= 3;
+    }
+    moveDown(){
+        console.log("pressing S");
+        this.player.y += 3;
+    }
+    moveRight(){
+        console.log("pressing D");
+        this.player.x += 3;
+    }
+
+    anyKey (event)
+    {
+        //  Only allow A-Z . and -
+
+        let code = event.keyCode;
+
+        if (code >= Phaser.Input.Keyboard.KeyCodes.A && code <= Phaser.Input.Keyboard.KeyCodes.Z)
+        {
+            code -= 65;
+
+            let y = Math.floor(code / 10);
+            let x = code - (y * 10);
+
+            console.log('pressing' + code );
+            if(code == 22){
+                this.moveUp();
+            }
+            if(code == 0){
+                this.moveLeft();
+            }
+            if(code == 18){
+                this.moveDown();
+            }
+            if(code == 3){
+                this.moveRight();
+            }
+            // WASD = 22, 0, 18, 3
+
+        }
+    }
+
+    // update(time,delta){
+    //     if (this.cursors.right.isDown)
+    //     {
+    //         this.player.x += this.speed * delta;
+    //     }
+    //     else if (this.cursors.up.isDown)
+    //     {
+    //         this.player.y -= this.speed * delta;
+    //     }
+    //     else if (this.cursors.down.isDown)
+    //     {
+    //         this.player.y += this.speed * delta;
+    //     }
+    // }
 }
 
 class Outro extends Phaser.Scene {
