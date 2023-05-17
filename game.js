@@ -34,17 +34,59 @@ class Level1 extends Phaser.Scene {
         this.load.image('square', 'block.png');
         
     }
-    create(){
-        // let keyA;
-        // let keyS;
-        // let keyD;
-        // let keyW;
+    // create(){
+    //     // let keyA;
+    //     // let keyS;
+    //     // let keyD;
+    //     // let keyW;
         
-        this.player = this.physics.add.sprite(256, 448, 'wizard').setBounce(0.2).setCollideWorldBounds(true);
-        this.boulder = this.physics.add.sprite(500, 450, 'square').setBounce(0.2).setCollideWorldBounds(true);
-        this.physics.add.collider(this.player, this.boulder);
+
+    //     this.player = this.physics.add.sprite(256, 448, 'wizard').setBounce(0.2).setCollideWorldBounds(true);
+    //     this.boulder = this.physics.add.sprite(500, 450, 'square').setBounce(0.2).setCollideWorldBounds(true);
+
         
+    //     this.cursors = this.input.keyboard.createCursorKeys();
+
+    //     this.physics.add.collider(this.player, this.boulder);   
+    //     this.physics.add.collider(this.boulder, this.player);
+
+    //     this.speed = Phaser.Math.GetSpeed(300, 1);
+
+    //     this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    //     this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    //     this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    //     this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    // }
+    // update(time, delta){
+
+    //     if(this.keyW.isDown || this.cursors.up.isDown) {
+    //         console.log('W key pressed');
+    //         this.player.y -= this.speed * delta;
+    //     }
+    //     if(this.keyA.isDown || this.cursors.left.isDown) {
+    //         console.log('A key pressed');
+    //         this.player.x -= this.speed * delta;
+    //     }
+    //     if(this.keyS.isDown || this.cursors.down.isDown) {
+    //         console.log('S key pressed');
+    //         this.player.y += this.speed * delta;
+    //     }
+    //     if(this.keyD.isDown || this.cursors.right.isDown) {
+    //         console.log('D key pressed');
+    //         this.player.x += this.speed * delta;
+    //     }
+    // }
+
+    create ()
+    {
+
+
+        this.player = this.physics.add.sprite(100, 450, 'wizard').setBounce(0.2).setCollideWorldBounds(true);
+        this.boulder = this.physics.add.sprite(500, 450, 'square').setBounce(0.0).setCollideWorldBounds(true);
+
         this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.physics.add.collider(this.player, this.boulder);
 
         this.speed = Phaser.Math.GetSpeed(300, 1);
 
@@ -53,26 +95,33 @@ class Level1 extends Phaser.Scene {
         this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
-        
-
     }
-    update(time, delta){
 
-        if(this.keyW.isDown || this.cursors.up.isDown) {
-            console.log('W key pressed');
-            this.player.y -= this.speed * delta;
+    update (time, delta)
+    {
+        if(!this.cursors.left.isDown){
+            this.player.setVelocityX(0);
+            this.player.setVelocityY(0);
         }
-        if(this.keyA.isDown || this.cursors.left.isDown) {
-            console.log('A key pressed');
-            this.player.x -= this.speed * delta;
+        if (this.cursors.left.isDown || this.keyA.isDown)
+        {
+            this.player.setVelocityX(-160);
+
         }
-        if(this.keyS.isDown || this.cursors.down.isDown) {
-            console.log('S key pressed');
-            this.player.y += this.speed * delta;
+        if (this.cursors.right.isDown)
+        {
+            this.player.setVelocityX(160);
+
         }
-        if(this.keyD.isDown || this.cursors.right.isDown) {
-            console.log('D key pressed');
-            this.player.x += this.speed * delta;
+        if (this.cursors.up.isDown)
+        {
+            this.player.setVelocityY(-160);
+
+        }
+        if (this.cursors.down.isDown)
+        {
+            this.player.setVelocityY(160);
+
         }
     }
 
