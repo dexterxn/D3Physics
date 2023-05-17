@@ -19,6 +19,7 @@ class Level1 extends Phaser.Scene {
     keyS;
     keyD;
     keyW;
+    boulder;
 
     constructor(){
         super('level1');
@@ -41,11 +42,9 @@ class Level1 extends Phaser.Scene {
         
         this.player = this.physics.add.sprite(256, 448, 'wizard').setBounce(0.2).setCollideWorldBounds(true);
         this.boulder = this.physics.add.sprite(500, 450, 'square').setBounce(0.2).setCollideWorldBounds(true);
-
+        this.physics.add.collider(this.player, this.boulder);
         
         this.cursors = this.input.keyboard.createCursorKeys();
-        // this.input.keyboard.on('keydown', this.anyKey, this);
-        // this.player = this.add.sprite(400, 500, 'wizard').setDepth(1);
 
         this.speed = Phaser.Math.GetSpeed(300, 1);
 
@@ -54,41 +53,7 @@ class Level1 extends Phaser.Scene {
         this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
-        this.physics.add.collider(this.player, this.boulder);
-
-
-        // const setVelocity = (body, v) =>
-        // {
-        //     if (colliderSet)
-        //     {
-        //         body.setVelocityY(v);
-        //     }
-        //     else
-        //     {
-        //         this.info.setColor('#ff0000');
-        //     }
-        // };
         
-
-        // const boulder = this.physics.add.image(508, 500, 'square').setCollideWorldBounds().setInteractive();
-        // const boulder2 = this.physics.add.image(508, 650, 'square').setCollideWorldBounds().setInteractive();
-        // const wizard = this.player.setCollideWorldBounds().setInteractive();;
-
-        // boulder.setBounce(0.5);
-        // boulder.setPushable();
-
-        // boulder.on('pointerdown', () =>
-        // {
-        //     setVelocity(boulder, -200);
-        // });
-
-
-        // // boulder.setPushable(true);
-        // let colliderSet = true;
-        // this.physics.add.collider(boulder2, boulder);
-        // this.physics.add.collider(wizard, boulder);
-        // this.physics.add.collider(wizard, boulder2);
-
 
     }
     update(time, delta){
