@@ -133,7 +133,7 @@ class Level2 extends Phaser.Scene {
         this.player = this.physics.add.sprite(100, 450, 'wizard').setBounce(0.2).setCollideWorldBounds(true);
         this.boulder = this.physics.add.sprite(500, 450, 'square').setBounce(0.2).setCollideWorldBounds(true);
         this.bullet = this.physics.add.sprite(0,0,'bullet').setBounce(1.0).setCollideWorldBounds(true);
-        const cursor = this.add.image(0, 0, 'bullet').setVisible(false);
+
 
         this.cursors = this.input.keyboard.createCursorKeys();
         this.add.text(50, 50, "Level 2 ").setFontSize(50);
@@ -143,8 +143,6 @@ class Level2 extends Phaser.Scene {
 
         this.physics.add.collider(this.player, this.boulder);
         this.physics.add.collider(this.boulder, this.player);
-        
-        
 
         this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -152,15 +150,32 @@ class Level2 extends Phaser.Scene {
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
-
-        // Fires bullet from player on left click of mouse
-        this.input.on('pointerdown', (pointer) =>
-        {
-            cursor.copyPosition(pointer).setVisible(true);
-            this.physics.moveToObject(this.bullet, cursor, 200);
-            // this.bullet.setPosition(this.player.x, this.player.y);
-            // this.direction = Math.atan((this.pointer.x - this.bullet.x) / (pointer.y - this.bullet.y));
+        const bullets = this.physics.add.group({
+            active: false,
+            bounceX: 1,
+            bounceY: 1,
+            collideWorldBounds: true,
+            frame: [ 0, 1, 2, 3, 4 ],
+            key: 'bullet',
+            quantity: 12,
+            setXY: { x: this.player.x, y: this.player.y }
         });
+        this.input.on('pointerdown', (pointer) =>
+
+        {
+            const bullet = bullets.getFirstDead();
+            bullet.setActive(true);
+            this.physics.velocityFromAngle(this.player.angle, 300, bullet.body.velocity);
+        });
+
+        let angle = 0;
+
+        this.input.on('pointermove', (pointer) =>
+        {
+            angle = Phaser.Math.Angle.BetweenPoints(this.player, pointer);
+            this.player.rotation = angle +90;
+        });
+        
     }
 
     update (time, delta)
