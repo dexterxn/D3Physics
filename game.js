@@ -5,14 +5,19 @@ class Bullet extends Phaser.Physics.Arcade.Sprite
         super(scene, x, y, 'bullet');
     }
 
-    fire (x, y)
+    fire (x, y, dx, dy)
     {
         this.body.reset(x, y);
 
         this.setActive(true);
         this.setVisible(true);
-
-        this.setVelocityY(-300);
+        // let angle = 0;
+        // angle = Phaser.Math.Angle.BetweenPoints(this.body, pointer);
+        // this.body.rotaion = angle + 90;
+        this.setVelocity(dx -x, dy-y);
+        // let angle = this.physics.moveToObject('bullet', 'boulder', 300);
+        // this.setAngle(angle);
+        
     }
 
     preUpdate (time, delta)
@@ -34,7 +39,7 @@ class Bullets extends Phaser.Physics.Arcade.Group
         super(scene.physics.world, scene);
 
         this.createMultiple({
-            frameQuantity: 5,
+            frameQuantity: 20,
             key: 'bullet',
             active: false,
             visible: false,
@@ -42,13 +47,13 @@ class Bullets extends Phaser.Physics.Arcade.Group
         });
     }
 
-    fireBullet (x, y)
+    fireBullet (x, y, dx, dy)
     {
         const bullet = this.getFirstDead(false);
 
         if (bullet)
         {
-            bullet.fire(x, y);
+            bullet.fire(x, y, dx, dy);
         }
     }
 }
@@ -95,8 +100,6 @@ class Level1 extends Phaser.Scene {
 
     create ()
     {
-
-
         this.player = this.physics.add.sprite(100, 450, 'wizard').setBounce(0.2).setCollideWorldBounds(true);
         this.boulder = this.physics.add.sprite(500, 450, 'square').setBounce(0.2).setCollideWorldBounds(true);
 
@@ -188,8 +191,6 @@ class Level2 extends Phaser.Scene {
 
         this.player = this.physics.add.sprite(100, 450, 'wizard').setBounce(0.2).setCollideWorldBounds(true);
         this.boulder = this.physics.add.sprite(500, 450, 'square').setBounce(0.2).setCollideWorldBounds(true);
-        this.bullet = this.physics.add.sprite(0,0,'bullet').setBounce(1.0).setCollideWorldBounds(true);
-
 
         this.cursors = this.input.keyboard.createCursorKeys();
         this.add.text(50, 50, "Level 2 ").setFontSize(50);
@@ -227,17 +228,17 @@ class Level2 extends Phaser.Scene {
         this.input.on('pointerdown', (pointer) =>
 
         {
-            this.bullets.fireBullet(this.player.x, this.player.y);
+            this.bullets.fireBullet(this.player.x, this.player.y, pointer.x, pointer.y);
 
         });
 
         let angle = 0;
 
-        this.input.on('pointermove', (pointer) =>
-        {
-            angle = Phaser.Math.Angle.BetweenPoints(this.player, pointer);
-            this.player.rotation = angle +90;
-        });
+        // this.input.on('pointermove', (pointer) =>
+        // {
+        //     angle = Phaser.Math.Angle.BetweenPoints(this.player, pointer);
+        //     this.player.rotation = angle +90;
+        // });
         
     }
 
