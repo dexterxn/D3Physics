@@ -3,6 +3,8 @@ class Bullet extends Phaser.Physics.Arcade.Sprite
     constructor (scene, x, y)
     {
         super(scene, x, y, 'bullet');
+        this.lifespan = 0; // Lifespan of the bullet in milliseconds
+
     }
 
     fire (x, y, dx, dy)
@@ -20,17 +22,26 @@ class Bullet extends Phaser.Physics.Arcade.Sprite
 
         this.setVelocity(xR*300,yR*300);
 
+        this.lifespan = 3000; // Set the initial lifespan to 2000 milliseconds
+
     }
 
     preUpdate (time, delta)
     {
         super.preUpdate(time, delta);
-
-        if (this.y <= -32)
+        // width: 1920
+        // height: 1080
+        this.lifespan -= delta; 
+        if (this.y <= -30 || this.y >= 1102 || this.x <= -30 || this.y >= 1950)
         {
             this.setActive(false);
             this.setVisible(false);
         }
+        if (this.lifespan <= 0) {
+            this.setActive(false);
+            this.setVisible(false);
+            this.body.stop(); // Stop the bullet's movement
+          }
     }
 }
 
