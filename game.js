@@ -8,16 +8,15 @@ class Bullet extends Phaser.Physics.Arcade.Sprite
     fire (x, y, dx, dy)
     {
         this.body.reset(x, y);
-
         this.setActive(true);
         this.setVisible(true);
-        // let angle = 0;
-        // angle = Phaser.Math.Angle.BetweenPoints(this.body, pointer);
-        // this.body.rotaion = angle + 90;
-        this.setVelocity(dx -x, dy-y);
-        // let angle = this.physics.moveToObject('bullet', 'boulder', 300);
-        // this.setAngle(angle);
-        
+
+        let angle = Phaser.Math.Angle.Between(x,y,dx,dy);
+
+        let xR = Math.cos(angle);
+        let yR = Math.sin(angle);
+
+        this.setVelocity(xR*300,yR*300);        
     }
 
     preUpdate (time, delta)
@@ -39,7 +38,7 @@ class Bullets extends Phaser.Physics.Arcade.Group
         super(scene.physics.world, scene);
 
         this.createMultiple({
-            frameQuantity: 20,
+            frameQuantity: 5,
             key: 'bullet',
             active: false,
             visible: false,
