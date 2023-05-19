@@ -7,6 +7,7 @@ class Bullet extends Phaser.Physics.Arcade.Sprite
 
     fire (x, y, dx, dy)
     {
+
         this.body.reset(x, y);
         this.setActive(true);
         this.setVisible(true);
@@ -38,7 +39,7 @@ class Bullets extends Phaser.Physics.Arcade.Group
         super(scene.physics.world, scene);
 
         this.createMultiple({
-            frameQuantity: 5,
+            frameQuantity: 30,
             key: 'bullet',
             active: false,
             visible: false,
@@ -205,25 +206,7 @@ class Level2 extends Phaser.Scene {
         this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
-
-        // const bullets = this.physics.add.group({
-        //     active: false,
-        //     bounceX: 1,
-        //     bounceY: 1,
-        //     collideWorldBounds: true,
-        //     frame: [ 0, 1, 2, 3, 4 ],
-        //     key: 'bullet',
-        //     quantity: 12,
-        //     setXY: { x: this.player.x, y: this.player.y }
-        // });
-        // this.input.on('pointerdown', (pointer) =>
-
-        // {
-        //     const bullet = bullets.getFirstDead();
-        //     bullet.setActive(true);
-        //     this.physics.velocityFromAngle(this.player.angle, 300, bullet.body.velocity);
-        // });
-
+        
         this.input.on('pointerdown', (pointer) =>
 
         {
@@ -325,10 +308,10 @@ class Level3 extends Phaser.Scene {
 
     update (time, delta)
     {   
-        if(!this.cursors.left.isDown){
-            this.player.setVelocityX(0);
-            this.player.setVelocityY(0);
-        }
+        // if(!this.cursors.left.isDown){
+        //     this.player.setVelocityX(0);
+        //     this.player.setVelocityY(0);
+        // }
         if(this.keyP.isDown){
             this.scene.start('outro');
         }
