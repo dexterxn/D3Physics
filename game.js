@@ -1,3 +1,58 @@
+class Bullet extends Phaser.Physics.Arcade.Sprite
+{
+    constructor (scene, x, y)
+    {
+        super(scene, x, y, 'bullet');
+    }
+
+    fire (x, y)
+    {
+        this.body.reset(x, y);
+
+        this.setActive(true);
+        this.setVisible(true);
+
+        this.setVelocityY(-300);
+    }
+
+    preUpdate (time, delta)
+    {
+        super.preUpdate(time, delta);
+
+        if (this.y <= -32)
+        {
+            this.setActive(false);
+            this.setVisible(false);
+        }
+    }
+}
+
+class Bullets extends Phaser.Physics.Arcade.Group
+{
+    constructor (scene)
+    {
+        super(scene.physics.world, scene);
+
+        this.createMultiple({
+            frameQuantity: 5,
+            key: 'bullet',
+            active: false,
+            visible: false,
+            classType: Bullet
+        });
+    }
+
+    fireBullet (x, y)
+    {
+        const bullet = this.getFirstDead(false);
+
+        if (bullet)
+        {
+            bullet.fire(x, y);
+        }
+    }
+}
+
 class Intro extends Phaser.Scene {
     constructor() {
         super('intro');
@@ -129,6 +184,7 @@ class Level2 extends Phaser.Scene {
     create ()
     {
 
+        this.bullets = new Bullets(this);
 
         this.player = this.physics.add.sprite(100, 450, 'wizard').setBounce(0.2).setCollideWorldBounds(true);
         this.boulder = this.physics.add.sprite(500, 450, 'square').setBounce(0.2).setCollideWorldBounds(true);
@@ -150,22 +206,29 @@ class Level2 extends Phaser.Scene {
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
-        const bullets = this.physics.add.group({
-            active: false,
-            bounceX: 1,
-            bounceY: 1,
-            collideWorldBounds: true,
-            frame: [ 0, 1, 2, 3, 4 ],
-            key: 'bullet',
-            quantity: 12,
-            setXY: { x: this.player.x, y: this.player.y }
-        });
+        // const bullets = this.physics.add.group({
+        //     active: false,
+        //     bounceX: 1,
+        //     bounceY: 1,
+        //     collideWorldBounds: true,
+        //     frame: [ 0, 1, 2, 3, 4 ],
+        //     key: 'bullet',
+        //     quantity: 12,
+        //     setXY: { x: this.player.x, y: this.player.y }
+        // });
+        // this.input.on('pointerdown', (pointer) =>
+
+        // {
+        //     const bullet = bullets.getFirstDead();
+        //     bullet.setActive(true);
+        //     this.physics.velocityFromAngle(this.player.angle, 300, bullet.body.velocity);
+        // });
+
         this.input.on('pointerdown', (pointer) =>
 
         {
-            const bullet = bullets.getFirstDead();
-            bullet.setActive(true);
-            this.physics.velocityFromAngle(this.player.angle, 300, bullet.body.velocity);
+            this.bullets.fireBullet(this.player.x, this.player.y);
+
         });
 
         let angle = 0;
@@ -314,6 +377,6 @@ const game = new Phaser.Game({
         default: 'arcade',
         arcade: { debug: true }
     },
-    scene: [Intro, Level1, Level2, Outro],
+    scene: [Intro, Level1, Level2, Level3, Outro],
     title: "Adventure Game",
 });
