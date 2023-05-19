@@ -9,6 +9,7 @@ class Bullet extends Phaser.Physics.Arcade.Sprite
     {
 
         this.body.reset(x, y);
+        this.setBounce(1.0).setCollideWorldBounds(true);
         this.setActive(true);
         this.setVisible(true);
 
@@ -17,7 +18,8 @@ class Bullet extends Phaser.Physics.Arcade.Sprite
         let xR = Math.cos(angle);
         let yR = Math.sin(angle);
 
-        this.setVelocity(xR*300,yR*300);        
+        this.setVelocity(xR*300,yR*300);
+
     }
 
     preUpdate (time, delta)
