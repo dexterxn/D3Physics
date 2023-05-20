@@ -14,7 +14,7 @@ Play the game here
 https://dexterxn.github.io/D3Physics/
 
 How it satisfies requirements
-- level 2 introduces ability to push around blocks. Which is a physics interactions
+- level 1 introduces ability to push around blocks. Which is a physics interactions
 - level 2 introduces the ability to bounce bullets off walls 
 - level 3 (still in progress) introduces "space" like physics or icy floor like movement
 How all your assets are created
